@@ -1,3 +1,4 @@
+
 const express = require('express');
 const axios = require('axios');
 
@@ -5,8 +6,13 @@ const app = express();
 const PORT = 9876;
 const WINDOW_SIZE = 10;
 const API_URL = 'http://20.244.56.144/test';
-
-
+const apiKey = 'eyJhbGc101JIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXB0bGFpbXMi0nsiZXhwIjoxNzIwNzc0OTgxLC3pYXQ10jE3MjA3NzQ2ODEsImlzcyI6IkFmZm9yZG1lZCIsImp@aSI6ImZiY2JmYzBjLTAZYTItNDcyMC@5ZDIOLWZKO TI1MmZMzdiMiIsInN1Y1I6ImRlZXBhay5ndXB0YV9jczIxQGdsYS5hYy5pbiJ9LCJjb21wYW55TmFtZSI6ImdvTWFydCIsImNsaWVudElEIjoiZmJjYmZjMGMtMDNhMi00Nz IwLT1kMjQtZmQ5MjUyZmMzN2IyIiwiY2xpZW50U2VjcmV0IjoiR1NDS2t1SkNNeWx2eX12VCIsIm93bmVyTmFtZSI6IkRIZXBhayIsIm93bmVyRW1haWw101JkZWVwYWsuZ3V wdGFLY3MyMUBnbGFuYWMuaw41LCJyb2xsTm8101IyMTE1MDAwMzE5In0.UGx7rI_am48KJNJnhXwSDdwuwXUF21PUdux3Lh--K6U';
+const config = {
+    headers: {
+        'Authorization': `Bearer ${apiKey}`
+    }
+};
+ 
 let numbersWindow = [];
 
 const fetchNumbers = async (type) => {
@@ -22,8 +28,8 @@ const fetchNumbers = async (type) => {
     }
 
     try {
-        const response = await axios.get(urlMap[type], { timeout: 500 });
-        return response.data.numbers;
+        const response = await axios.get(urlMap[type], { timeout: 500, ...config });
+        return response.data.numbers || [];
     } catch (error) {
         console.error('Error fetching numbers:', error.message);
         return [];
@@ -61,6 +67,7 @@ app.get('/numbers/:type', async (req, res) => {
             avg
         });
     } catch (error) {
+        console.error('Error processing request:', error.message);
         res.status(500).json({ error: error.message });
     }
 });
@@ -68,3 +75,11 @@ app.get('/numbers/:type', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+
+// "companyName": "goMart", 
+// "clientID": "fbcbfc0c-03a2-4720-9d24-fd9252fc37b2"
+// , "clientSecret": "GSCKkuJCMylvyyvT", 
+// "ownerName": "Deepak", 
+// "ownerEmail": "deepak.gupta_cs21@gla.ac.in",
+//  "rollNo": "2115000319"
